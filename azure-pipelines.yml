@@ -38,7 +38,7 @@ steps:
   displayName: 'npm version'
   inputs:
     command: 'custom'
-    customCommand: 'version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version'
+    customCommand: 'version $(GitVersion.SemVer)'
 
 - task: Npm@1
   displayName: 'npm run build'
@@ -47,6 +47,27 @@ steps:
     customCommand: 'run build'
 
 - task: Npm@1
-  displayName: 'npm publish'
+  displayName: 'npm pack'
   inputs:
-    command: 'publish'
+    command: 'custom'
+    customCommand: 'pack'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '*.tgz' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'stage npm package'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'package.json' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'stage package.json'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/npm'
+    artifactName: npm
+  displayName: 'Publish npm artifact'
