@@ -1,9 +1,14 @@
 {
   "name": "rollup-ns",
   "version": "1.0.0",
-  "description": "the node tool to rollup es6 modules to global namespace(s)",
+  "description": "The node tool to rollup es6 typescript modules to single source file.",
   "author": "Csizmazia Zoltán <cszoli81@gmail.com>",
-  "license": "",
+  "license": "BSD-3-Clause",
+  "homepage": "https://dev.azure.com/csizo/rollup-ns/",
+  "repository": {
+    "type": "git",
+    "url": "https://dev.azure.com/csizo/_git/rollup-ns"
+  },
   "keywords": [
     "es6",
     "typescript",

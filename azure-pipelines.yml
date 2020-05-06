@@ -1,0 +1,52 @@
+# Node.js
+
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+variables:
+  GitVersion.SemVer: ''
+
+trigger:
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    git config --global user.email "cszoli81@gmail.com"
+    git config --global user.name "Csizmazia Zoltán"
+  displayName: 'set git name and email'
+
+- task: UseGitVersion@5    
+  displayName: 'Calculate semantic version'
+  inputs: 
+    versionSpec: '5.x'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: 'install'
+
+- task: Npm@1
+  displayName: 'npm version'
+  inputs:
+    command: 'custom'
+    customCommand: 'version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version'
+
+- task: Npm@1
+  displayName: 'npm run build'
+  inputs:
+    command: 'custom'
+    customCommand: 'run build'
+
+- task: Npm@1
+  displayName: 'npm publish'
+  inputs:
+    command: 'publish'
