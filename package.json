@@ -1,0 +1,36 @@
+{
+  "name": "rollup-ns",
+  "version": "1.0.0",
+  "description": "the node tool to rollup es6 modules to global namespace(s)",
+  "author": "Csizmazia Zoltán <cszoli81@gmail.com>",
+  "license": "",
+  "keywords": [
+    "es6",
+    "typescript",
+    "namespace",
+    "bundle"
+  ],
+  "main": "dist/index.js",
+  "bin": {
+    "rollup-ns": "./bin/rollup-ns"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild-test": "tsc && node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/micromatch": "^3.1.0",
+    "@types/node": "^12.0.2",
+    "@types/prettier": "^1.16.4",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "cosmiconfig": "^5.2.1",
+    "micromatch": "^4.0.2",
+    "node-balanced": "0.0.14",
+    "prettier": "^1.19.1"
+  }
+}
