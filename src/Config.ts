@@ -10,7 +10,10 @@ export class Config {
         "**/*.[t|T]est.ts",
         "**/*.js"
     ];
-    //the source directory to search modules from
+
+    /**
+     * gets or sets the source folder
+     */
     src: string = "../../src/source-project/src";
 
     /**

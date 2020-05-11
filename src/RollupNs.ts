@@ -15,8 +15,8 @@ export class RollupNs {
     /**
      * runs the rollup.
      */
-    async run(): Promise<void> {
-        this.config = Config.fromConfig();
+    async run(options?: { config?: Config }): Promise<void> {
+        this.config = options?.config ?? Config.fromConfig();
         //set up the namespace builder
         this.nsBuilder = new NamespaceBuilder();
         console.log('reading source files.');
@@ -50,7 +50,7 @@ export class RollupNs {
         m.addContent(fileDirectory, filePath, content);
         ns.modules.push(m);
         this.nsBuilder.modules[filePath] = m;
-        
+
         //fill the nsBuilder exported types.
         m.exportedTypes.forEach(exportedType => {
             let typeModule: Module | Module[] = this.nsBuilder.typeMap[exportedType.typeName];

@@ -47,6 +47,12 @@ steps:
     customCommand: 'run build'
 
 - task: Npm@1
+  displayName: 'npm run test and coverage'
+  inputs:
+    command: 'custom'
+    customCommand: 'run coverage'
+
+- task: Npm@1
   displayName: 'npm pack'
   inputs:
     command: 'custom'
@@ -65,6 +71,12 @@ steps:
     contents: 'package.json' 
     targetFolder: $(Build.ArtifactStagingDirectory)/npm
   displayName: 'stage package.json'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
+  displayName: 'Publish coverage'
 
 - task: PublishBuildArtifacts@1
   inputs:

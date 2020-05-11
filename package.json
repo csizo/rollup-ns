@@ -23,19 +23,24 @@
   "scripts": {
     "start": "tsc && node dist/index.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "coverage": "jest --coverage --coverageReporters=cobertura",
     "prebuild-test": "tsc && node dist/index.js"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "@types/micromatch": "^3.1.0",
     "@types/node": "^12.0.2",
     "@types/prettier": "^1.16.4",
-    "typescript": "^3.4.5"
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typescript": "~3.7.4"
   },
   "dependencies": {
     "cosmiconfig": "^5.2.1",
     "micromatch": "^4.0.2",
     "node-balanced": "0.0.14",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "ts-node": "^8.10.1"
   }
 }

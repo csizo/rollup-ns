@@ -14,7 +14,7 @@
   ],
   "exclude": [
     "/node_modules",
-    "tests/**/*.spec.ts",
+    "tests/**/*.spec.tss",
     "bin",
     "dist"
   ]
