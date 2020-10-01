@@ -1,5 +1,5 @@
-import { Namespace } from './Namespace';
 import { Module } from './Module';
+import { Namespace } from './Namespace';
 export type ModuleImport = {
     /**
      * the module the imported type originated from
@@ -10,4 +10,5 @@ export type ModuleImport = {
      * The resolved {@link Namespace} for the originated {@link Module}
      */
     ns?: Namespace;
+    isExternal:boolean;
 };

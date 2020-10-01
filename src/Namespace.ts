@@ -15,10 +15,16 @@ export class Namespace {
      * the parent namespace
      */
     private _parent?: Namespace = undefined;
+
+    /**
+     * gets or sets the External paths of namespace
+     */
+    externalPaths: string[] = [];
     /**
      * The namespace resolved modules.
      */
     modules: Module[] = [];
+
     /**
      * creates new instance of the namespace
      * @param name
@@ -27,6 +33,7 @@ export class Namespace {
     constructor(readonly name: string, parent?: Namespace) {
         this._parent = parent;
     }
+
     /**
      * gets the namespace full name
      * @returns {}
@@ -40,6 +47,14 @@ export class Namespace {
         }
         return fullName;
     }
+
+    /**
+     * gets if the namespace (has) external types.
+     */
+    get isExternal(): boolean {
+        return this.externalPaths?.length > 0;
+    }
+
     /**
      * check if namespace is a 'global' namespace
      * @returns {}
@@ -47,6 +62,7 @@ export class Namespace {
     get isGlobal(): boolean {
         return this._parent == undefined && this.name === "global";
     }
+
     /**
      * check if the namespace is a root namespace.
      * it can be either top level namespace or 'global'
@@ -55,6 +71,7 @@ export class Namespace {
     get isRoot(): boolean {
         return this._parent == undefined;
     }
+
     /**
      * returns the child namespaces
      * @returns {}
@@ -64,6 +81,7 @@ export class Namespace {
     } {
         return this._namespaces;
     }
+
     /**
      * gets the parent namespace or undefined if empty.
      * @returns {}
@@ -71,6 +89,7 @@ export class Namespace {
     get parent(): Namespace | undefined {
         return this._parent;
     }
+
     /**
      * returns true if this namespace contains the other namespace
      * @param ns
@@ -84,6 +103,7 @@ export class Namespace {
         const contains = this.fullName.lastIndexOf(ns.fullName, 0) === 0;
         return contains;
     }
+
     /**
      * write the namespace and its modules to the target file
      * @param {number} fd The target file descriptor.
@@ -95,7 +115,7 @@ export class Namespace {
         }
         writeContentFn();
         if (!this.isGlobal) {
-            fs.appendFileSync(fd,`}${os.EOL}`);
+            fs.appendFileSync(fd, `}${os.EOL}`);
         }
     }
 }

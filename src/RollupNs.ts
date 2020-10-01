@@ -1,42 +1,49 @@
 import fs = require("fs");
 import path = require("path");
 import micromatch = require("micromatch");
+import { Config } from "./Config";
+import { Module } from "./Module";
 import { Namespace } from './Namespace';
 import { NamespaceBuilder } from './NamespaceBuilder';
-import { Module } from "./Module";
-import { Config } from "./Config";
 
 /**
  * defines and implements the rollup namespace functionality
  */
 export class RollupNs {
-    config: Config = new Config();
+    static config: Config = new Config();
+
     nsBuilder: NamespaceBuilder;
+
     /**
      * runs the rollup.
+     * @returns The roll-up target file
      */
     async run(options?: { config?: Config }): Promise<void> {
-        this.config = options?.config ?? Config.fromConfig();
+        RollupNs.config = options?.config ?? Config.fromConfig();
         //set up the namespace builder
-        this.nsBuilder = new NamespaceBuilder();
+        this.nsBuilder = new NamespaceBuilder(RollupNs.config);
         console.log('reading source files.');
         //walk through the source directory files.
-        this._walk(path.normalize(this.config.src), this.config.targetNs, this.processModule.bind(this));
+        this._walk(path.normalize(RollupNs.config.src), RollupNs.config.targetNs, this.processModule.bind(this));
         console.log('resolving imports.');
         //resolve the imports
         this.nsBuilder.resolveImports();
-        console.log('resolving declarations.')
+        console.log('resolving declarations.');
         //resolve the declarations
-        this.nsBuilder.resolveDeclareModules();
-        console.log(`writing target ${this.config.target}.`);
+        this.nsBuilder.resolveDeclarations();
+       
+        //explicitly set the declare module to 'global'
+        this.nsBuilder.declarations.forEach(m=>m.ns = this.nsBuilder.getNamespace('global'));
+
         //write the target file
-        await this.nsBuilder.write(this.config);
-        //pretty the target file...
+        await this.nsBuilder.write(RollupNs.config);
+        //done.
         console.log('done');
     }
+
     protected processModule(fileDirectory: string, fileName: string, nsName: string): void {
         const filePath = path.resolve(path.join(fileDirectory, fileName));
-        if (micromatch.some([filePath], this.config.exclude)) {
+        if (micromatch.some([filePath], RollupNs.config.exclude)) {
             //console.warn(filePath + " excluded");
             return;
         }
@@ -66,6 +73,7 @@ export class RollupNs {
             this.nsBuilder.typeMap[exportedType.typeName] = typeModule;
         });
     }
+
     // sync version
     private _walk(currentDirPath: string, nsName: string, callbackFn: (fileDirectory: string, fileName: string, nsName: string, stat: fs.Stats) => void): void {
         fs.readdirSync(currentDirPath).forEach(fileName => {

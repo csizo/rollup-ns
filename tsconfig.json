@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
-
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "module": "CommonJS",
     "outDir": "./dist",
-    "typeRoots": [ "./node_modules/@types" ]
+    "sourceMap": true,
+    "target": "es5",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "include": [
-    "src/**/*.ts"
-  ],
   "exclude": [
-    "/node_modules",
-    "tests/**/*.spec.tss",
+    "node_modules",
+    "tests/**/*.ts",
     "bin",
-    "dist"
+    "dist",
+  ],
+  "include": [
+    "src/**/*.ts",
   ]
 }

@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "None",
+        "declaration": true,
+        "baseUrl": ".",
+        "typeRoots": [""]
+    },
+    "include": [
+        "ScopedAugmentation.ts"
+    ]
+}

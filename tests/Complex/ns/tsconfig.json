@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "None",
+        "declaration": true,
+        "baseUrl": ".",
+        "typeRoots": [            
+            "./@types"
+        ]
+    },
+    "files": [
+        "./Complex.ts",
+        "./Complex.Globals.d.ts",
+        "../../Basic/ns/Basic.ts",
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "None",
+        "declaration": true,
+        "baseUrl": ".",
+        "typeRoots": ["./"]
+    },
+    "include": [
+        "GlobalAugmentation.ts",
+        "GlobalAugmentation.Globals.d.ts"
+    ]
+}

@@ -3,19 +3,30 @@ import cosmiconfig = require("cosmiconfig");
  * defines the rollup-ns configuration options.
  */
 export class Config {
-    //exluded files in the source directory.
+    //excluded files in the source directory.
     exclude: string[] = [
         "**/index.ts",
         "**/*.[s|S]pec.ts",
         "**/*.[t|T]est.ts",
         "**/*.js"
     ];
+    /**
+     * gets or sets the external libraries (other namespace references)
+     */
+    externalLibs: { [path: string]: string } = {}
 
+    /**
+     * gets or sets the external types which are resolved to external sources.  (such as Error, Window, Array types)
+     */
+    externalTypes: string[] = ['Error', 'Window', 'Array'];
+    /**
+     * gets or sets if the target ts file is prettied.
+     */
+    pretty: boolean = false;
     /**
      * gets or sets the source folder
      */
     src: string = "../../src/source-project/src";
-
     /**
      * gets or set the target file
      */
@@ -24,14 +35,7 @@ export class Config {
      * gets or sets the generated target namespace
      */
     targetNs: string = "Target.Namespace";
-    /**
-     * gets or sets if the target ts file is prettied.
-     */
-    pretty: boolean = false;
-    ////module overrides.
-    //fileNamespaces: { [key: string]: string } = {
-    //  ["Extensions.ts"]: "global"
-    //};
+
     /**
      * gets the config from the configuration (rollup-ns)
      * @returns config 
@@ -50,12 +54,19 @@ export class Config {
         // result.filepath is the path to the config file that was found.
         // result.isEmpty is true if there was nothing to parse in the config file.
         if (result && result.config && !result.isEmpty) {
-            console.log(`rollup-ns config from: ${result.filepath}`);
             config.src = result.config.src;
             config.exclude = result.config.exclude ? result.config.exclude : [];
             config.target = result.config.target ? result.config.target : "index.ts";
             config.targetNs = result.config.targetNs ? result.config.targetNs : "rollup.ns";
             config.pretty = result.config.pretty ? result.config.pretty : false;
+            config.externalTypes = result.config.externalTypes ?? ['Error'];
+            config.externalLibs = {};
+            if (result.config.externalLibs) {
+                for (const key of Object.keys(result.config.externalLibs)){
+                    config.externalLibs[key] = String(result.config.externalLibs[key])
+                }
+            }
+            console.log(`rollup-ns config from: ${result.filepath}`, config);
         }
         else if (result && result.isEmpty) {
             console.log(`rollup-ns config from: ${result.filepath}`);
