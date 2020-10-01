@@ -82,7 +82,6 @@ where the imported *module* defines the type like this:
 
 ## Example
 
-
 **Basic source files**
 
 ./ClassA.ts
